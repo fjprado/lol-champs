@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Links -->
+    <link rel="icon" href="./favicons/favicon-16x16.ico">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Main JS -->
+    <script
+        defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+    <script defer src="./js/script.js"></script>
+
+    <title>LoL Champs</title>
+</head>
+<body>
+    <main> 
+        <form class="form">
+            <input 
+                type="search" 
+                class="input__search"
+                placeholder="Search by Name"
+                required
+                />
+        </form>       
+
+        <div class="skins">
+            <button class="skin btn-prev">&lt;</button>
+            <img src="./images/champion-random.jpg" alt="champion" class="champion__image"> 
+            <button class="skin btn-next">&gt;</button>
+        </div>        
+        
+        <h1 class="champion__data">
+            <span class="champion__name">&ensp;</span>
+            <span class="champion__title">&ensp;</span>
+        </h1>  
+        
+        <div class="content_container">
+            <button class="content btn-info-prev">+ info</button>
+            <div id="info__lore" class="content__info">
+                <p class="content__info__lore">Search champion to get more information</p>    
+            </div>
+            <div id="info__stats" class="content__info">        
+                <div class="content__info__stats" >
+                    <div class="classes">
+                        <p class="classes__title" hidden>Class: </p>
+                        <div class="champion__classes"></div>
+                    </div>
+                    <div class="stats">
+                        <canvas id="championStats" style="width:100%;max-width:350px"></canvas>                        
+                    </div>                    
+                </div>
+            </div>
+            <div id="info__spells" class="content__info">
+                <div class="content__info__spells">
+                    <div class="passive"> 
+                        <p class="passive__title" hidden>Passive</p>  
+                        <div class="champion__passive">                                         
+                        </div>
+                    </div>
+                    <div class="spells">
+                        <p class="spells__title" hidden>Spells</p>
+                        <div class="champion__spells">                                         
+                        </div>  
+                    </div>                                      
+                </div>
+            </div>
+            <button class="content btn-info-next">+ info</button>
+        </div>
+        
+        <div class="functions">
+            <button class="function btn-prev">&lt;&ensp;Prev</button>
+            <button class="function btn-random">Random</button>
+            <button class="function btn-next">Next&ensp;&gt;</button>
+        </div>
+    </main>    
+</body>
+</html>

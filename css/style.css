@@ -1,0 +1,382 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300;500;600;800&display=swap');
+
+/* Base Config */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Noto Sans', cursive;
+}
+
+body {
+    position: relative;
+    text-align: center;
+    background: #2e2e2e;
+    height: 100vh;
+    min-height: 500px;    
+}
+
+main {
+    padding: 15px;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/background.webp);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: 3px solid #000;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Search Box */
+
+.input__search {
+    padding: 3%;
+    outline: none;
+    border: 2px solid #0f0f0f;
+    border-radius: 5px;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: clamp(5px, 2.2vw, 1rem);
+    text-align: center;
+    background-color: #2e2e2e;
+}
+
+/* Champion Image Box */
+
+.skins {
+    margin-top: 1rem;
+    min-width: 75vw; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.champion__image {
+    width: 40%;
+    min-width: 250px;
+    min-height: 150px;
+    max-height: 35vh;
+    max-width: 30vw;
+    border: 3px solid #0f0f0f;
+    border-radius: 50%;  
+    box-shadow: 5px 5px 3px #202020, 5px 6px 0 #bbbbbb;
+}
+
+.skin {
+    padding: 0.25rem 0.25rem;
+    border: 2px solid #0f0f0f;    
+    font-size: clamp(20px, 1.8vw, 2rem);
+    font-weight: 800;
+    background-color: #798794;
+    box-shadow: 3px 3px 2px #202020, 4px 4px 0 #bbbbbb;
+    width: 8%;
+    min-width: 40px;
+    min-height: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.skin:active {
+    font-size: clamp(18px, 1.5vw, 1.9rem);
+    box-shadow: inset 2px 2px 0 #222;
+}
+
+.btn-prev {
+    border-radius: 100% 10% 10% 100%;
+}
+
+.btn-next {
+    border-radius: 10% 50% 50% 10%;
+}
+
+/* Champion Data Box */
+
+.champion__data {
+    margin-top: -2.4rem;
+    font-weight: 500;
+    color: #aaaaaa;
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.champion__name {
+    font-weight: 800;    
+    font-size: clamp(22px, 2vw, 2.1rem);
+    color: #798794;
+    text-shadow: 3px 3px 2px #000, 4px 4px 1px #798794;
+}
+
+.champion__title {
+    font-weight: 500;
+    font-size: clamp(18px, 1.5vw, 1.8rem);
+    padding-top: 0.75rem;
+    text-shadow: 3px 3px 2px #000, 4px 4px 1px #798794;
+}
+
+/* Champion Info Box */
+
+.content_container {
+    width: 85%;       
+    height: 60%;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content.btn-info-prev,
+.content.btn-info-next {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 0.25rem 0.5rem;
+    border: 2px solid #000;    
+    font-size: clamp(5px, 2.2vw, 1rem);
+    font-weight: 800;
+    background-color: #798794;
+    box-shadow: 3px 3px 2px #2e2e2e, 4px 4px 0 #ffffff;
+}
+
+.content__info {    
+    width: 70%;
+    height: 92%; 
+    display: flex;    
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity: 0.6;
+    border-radius: 5px;
+    margin: auto 0;
+    justify-content: center;
+    align-items: center;
+}
+
+#info__stats,
+#info__spells{
+    display: none;
+}
+
+/* Champion Info Box - Lore */
+
+.content__info__lore {
+    width: 100%;
+    margin: auto 3%;
+    text-align: center;
+    font-weight: 600;
+    color: #000000;
+    font-size: clamp(10px, 1.3vw, 1rem);
+}
+
+/* Champion Info Box - Stats */
+
+.content__info__stats {
+    height: 80%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.classes {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 25%;
+}
+
+.classes__title{
+    font-weight: 800;
+    font-size: clamp(16px, 1.2vw, 1.5rem);
+    color: #2e2e2e;
+}
+
+.classes__icons,
+.spell__icons {
+    width: 50px;
+    padding: 5px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+}
+
+/* Champion Info Box - Spells */
+
+.content__info__spells {
+    display: flex;
+    gap: 1vh;
+    flex-direction: column;
+}
+
+.passive {
+    padding: 5px;
+}
+
+.passive__title {
+    font-weight: 800;
+    font-size: clamp(12px, 1vw, 1.2rem);
+    color: #2e2e2e;
+}
+
+.passive__icon {
+    width: 50px;
+}
+
+.passive__name {
+    font-weight: 800;
+    font-size: clamp(10px, 1vw, 1.5rem);
+    color: #2e2e2e;
+}
+
+.spell__name, 
+.passive__name {
+    display: none
+}
+
+.spells__title {
+    padding-bottom: 0.5rem;
+    font-weight: 800;
+    font-size: clamp(12px, 1vw, 1.2rem);
+    color: #2e2e2e;
+}
+
+.champion__spells {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 9px;
+}
+
+.spell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid rgb(46, 46, 46);
+    border-radius: 5px;
+    width: 20%;
+    min-width: 65px;
+    margin: 0 15px 0 15px;
+    padding: 2px;
+}
+
+.spell__name {
+    font-weight: 800;
+    font-size: clamp(10px, 1vw, 1.5rem);
+    color: #2e2e2e;
+    overflow-wrap: break-word;
+    width: 90%;
+}
+
+.functions {
+    position: absolute;
+    bottom: 1rem;
+    width: 75%;
+    height: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.function {
+    padding: 0.5rem 1rem;
+    border: 2px solid #000;
+    font-size: clamp(10px, 2.2vw, 1rem);
+    font-weight: 800;
+    background-color: #798794;
+    box-shadow: 3px 3px 2px #2e2e2e, 4px 4px 0 #ffffff;
+}
+
+.function.btn-prev,
+.function.btn-next {
+    width: 20%;
+    max-width: 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.function.btn-random {
+    border-radius: 10px;
+    width: 25%;
+    max-width: 200px;
+}
+
+.function:active,
+.btn-info-next:active,
+.btn-info-prev:active {
+    font-size: clamp(10px, 2vw, 0.95rem);
+    box-shadow: inset 2px 2px 0 #222;
+}
+
+@media only screen and (min-height: 580px) {
+    .content__info__spells {
+        display: flex;
+        gap: 4vh;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (min-width: 545px) {
+    .champion__spells {
+        display: flex;
+        gap: 10px;
+        justify-content: space-evenly;
+    }
+
+    .spells__title{
+        margin-bottom: 0.5rem;
+    }  
+    
+    .spell{
+        margin: 0;
+    }
+
+    .spell__name, 
+    .passive__name {
+        display: block
+    }
+}
+
+
+@media only screen and (min-width: 800px) {
+    .content__info__stats {
+        height: 92%;
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .content__info__spells {
+        display: flex;
+        flex-direction: row;
+        gap: 1vw;
+    }
+
+    .champion__passive {
+        padding: 2px;
+    }
+
+    .passive__title{
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+        font-weight: 800;
+        font-size: clamp(12px, 1vw, 1.2rem);
+        color: #2e2e2e;
+    } 
+
+    .classes {
+        flex-direction: column;
+    }
+
+    .classes__title{
+        margin-bottom: 1rem;
+    }
+}
