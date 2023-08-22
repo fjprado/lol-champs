@@ -224,6 +224,13 @@ main {
     font-size: clamp(12px, 1vw, 1.2rem);
     color: #2e2e2e;
 }
+.champion__passive {    
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
 
 .passive__icon {
     width: 50px;
