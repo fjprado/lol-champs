@@ -50,14 +50,14 @@ const fetchVersions = async () => {
 // Get current list of champions
 const fetchChampions = async () => { 
     await fetchVersions();  
-    const APIChampions = await fetch(`http://ddragon.leagueoflegends.com/cdn/${currentVersion}/data/en_US/champion.json`)
+    const APIChampions = await fetch(`https://ddragon.leagueoflegends.com/cdn/${currentVersion}/data/en_US/champion.json`)
     const data = (await APIChampions.json()).data;
     champions = Object.keys(data);
 }
 
 // Get champion details
 const fetchChampion = async (champion) => {
-    const APIChampion = await fetch(`http://ddragon.leagueoflegends.com/cdn/${currentVersion}/data/en_US/champion/${champion}.json`) 
+    const APIChampion = await fetch(`https://ddragon.leagueoflegends.com/cdn/${currentVersion}/data/en_US/champion/${champion}.json`) 
     const data = (await APIChampion.json()).data; 
     return Object.values(data)[0];
 }
@@ -105,7 +105,7 @@ const renderChampion = async (champ) => {
 // Change Champion and Skin Image
 const changeSkin = async (skin) => {   
     currentSkin = skin
-    championImage.src = `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${currentChampion}_${currentSkin.id}.jpg`
+    championImage.src = `https://ddragon.leagueoflegends.com/cdn/img/champion/splash/${currentChampion}_${currentSkin.id}.jpg`
     championName.innerHTML = currentSkin.id == 0 ? currentChampion : currentSkin.name;
 }
 
@@ -298,7 +298,7 @@ const generateSpells = () => {
 
     var elemPassiveImg = document.createElement("img");
     elemPassiveImg.className = "passive__icon";
-    elemPassiveImg.src = `http://ddragon.leagueoflegends.com/cdn/13.16.1/img/passive/${currentChampionDetails.passive.id}`;
+    elemPassiveImg.src = `https://ddragon.leagueoflegends.com/cdn/13.16.1/img/passive/${currentChampionDetails.passive.id}`;
     var elemPassiveName = document.createElement("p");
     elemPassiveName.className = "passive__name";
     elemPassiveName.innerHTML = currentChampionDetails.passive.name;
