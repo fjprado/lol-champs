@@ -41,7 +41,7 @@ main {
     border-radius: 5px;
     font-weight: 600;
     color: #ffffff;
-    font-size: clamp(5px, 2.2vw, 1rem);
+    font-size: clamp(12px, 2.2vw, 1rem);
     text-align: center;
     background-color: #2e2e2e;
 }
@@ -122,7 +122,7 @@ main {
 /* Champion Info Box */
 
 .content_container {
-    width: 85%;       
+    width: 100%;       
     height: 60%;
     margin-bottom: 2rem;
     display: flex;
@@ -136,9 +136,9 @@ main {
     display: flex;
     justify-content: center;
     border-radius: 10px;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 1rem;
     border: 2px solid #000;    
-    font-size: clamp(5px, 2.2vw, 1rem);
+    font-size: clamp(12px, 2.2vw, 1rem);
     font-weight: 800;
     background-color: #798794;
     box-shadow: 3px 3px 2px #2e2e2e, 4px 4px 0 #ffffff;
@@ -170,7 +170,7 @@ main {
     text-align: center;
     font-weight: 600;
     color: #000000;
-    font-size: clamp(10px, 1.3vw, 1rem);
+    font-size: clamp(12px, 1.3vw, 1rem);
 }
 
 /* Champion Info Box - Stats */
@@ -284,7 +284,7 @@ main {
 .functions {
     position: absolute;
     bottom: 1rem;
-    width: 75%;
+    width: 85%;
     height: 2.5rem;
     display: flex;
     justify-content: space-between;
@@ -292,9 +292,9 @@ main {
 }
 
 .function {
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.1rem;
     border: 2px solid #000;
-    font-size: clamp(10px, 2.2vw, 1rem);
+    font-size: clamp(12px, 2.2vw, 1rem);
     font-weight: 800;
     background-color: #798794;
     box-shadow: 3px 3px 2px #2e2e2e, 4px 4px 0 #ffffff;
@@ -303,7 +303,8 @@ main {
 .function.btn-prev,
 .function.btn-next {
     width: 20%;
-    max-width: 100px;
+    min-width: 50px;
+    max-width: 90px;
     display: flex;
     justify-content: center;
 }
@@ -311,13 +312,14 @@ main {
 .function.btn-random {
     border-radius: 10px;
     width: 25%;
+    min-width: 60px;
     max-width: 200px;
 }
 
 .function:active,
 .btn-info-next:active,
 .btn-info-prev:active {
-    font-size: clamp(10px, 2vw, 0.95rem);
+    font-size: clamp(12px, 2vw, 0.95rem);
     box-shadow: inset 2px 2px 0 #222;
 }
 
@@ -352,6 +354,14 @@ main {
 
 
 @media only screen and (min-width: 800px) {
+    .content_container {
+        width: 85%;       
+    }
+
+    .btn-info-prev, .btn-info-next {
+        padding: 0.25rem 0.5rem;
+    }
+
     .content__info__stats {
         height: 92%;
         width: 90%;
@@ -385,5 +395,13 @@ main {
 
     .classes__title{
         margin-bottom: 1rem;
+    }
+
+    .functions {
+        width: 75%;
+    }
+
+    .function {
+        padding: 0.5rem 1rem;
     }
 }
