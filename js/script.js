@@ -83,8 +83,10 @@ const renderChampion = async (champ) => {
                     }
                 })
             };
-            skins = data.skins.map(x => {
-                return { id: x.num, name: x.name}
+            skins = data.skins
+                .filter(x => !x.parentSkin)
+                .map(x => {
+                    return { id: x.num, name: x.name }
             });
             infoIndex = 0;
             championTitle.innerHTML = data.title;
