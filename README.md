@@ -6,10 +6,21 @@ The LoL - Champs is a website that allows users to search for details about Leag
 
 ## Features
 
-- **Search Champion:** Easily search for champions based on their names.
-- **See Skins:** View all the skins images.
-- **See Skills:** Visualize the skills of desired champion.
-- **See Lore:** Get the background history from each champion.
+- **Search Champion:** Instant suggestions as you type, by name or title (e.g. "kaisa", "nine-tailed fox").
+- **Browse Champions:** Pick from a grid of every champion, filterable by name and class.
+- **See Skins:** Splash art with a skin thumbnail strip; swipe or use arrow keys to cycle.
+- **See Abilities:** Passive and Q/W/E/R with descriptions, cooldowns, costs and range.
+- **See Stats:** Attack/Defense/Magic/Difficulty ratings plus base stats and per-level growth.
+- **See Lore:** The champion's story plus tips for playing as and against them.
+- **Shareable links:** The URL updates per champion (e.g. `index.html#Ahri`).
+
+### Keyboard shortcuts
+
+| Key | Action |
+| --- | --- |
+| `/` | Focus search |
+| `←` / `→` | Previous / next skin |
+| `Shift` + `←` / `→` | Previous / next champion |
 
 ## Getting Started
 
@@ -33,7 +44,7 @@ The LoL - Champs is a website that allows users to search for details about Leag
 
 ## Technologies Used
 
-- Javscript
+- JavaScript (no dependencies)
 - HTML/CSS
 
 ## Contributing

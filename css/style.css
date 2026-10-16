@@ -1,407 +1,907 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;300;500;600;800&display=swap');
+/* LoL Champs — colors inspired by the League client */
 
-/* Base Config */
+:root {
+    --bg: #010a13;
+    --panel: rgba(1, 10, 19, 0.8);
+    --gold: #c8aa6e;
+    --gold-dark: #785a28;
+    --text: #f0e6d2;
+    --muted: #a09b8c;
+    --line: #3c3c41;
+    --blue: #0ac8b9;
+    --blue-dark: #005a82;
+
+    --attack: #e84057;
+    --defense: #3fbf7f;
+    --magic: #3a8dde;
+    --difficulty: #c89b3c;
+
+    --title-font: 'Cinzel', serif;
+    --body-font: 'Inter', sans-serif;
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Noto Sans', cursive;
 }
 
 body {
-    position: relative;
-    text-align: center;
-    background: #2e2e2e;
-    height: 100vh;
-    min-height: 500px;    
-}
-
-main {
-    padding: 15px;
-    width: 100%;
-    height: 100%;
-    background-image: url(../images/background.webp);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border: 3px solid #000;
-    border-radius: 15px;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.6 var(--body-font);
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+}
+
+a {
+    color: var(--gold);
+}
+
+/* ---------- Background: map image + blurred splash of the current skin ---------- */
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--bg) url(../images/background.webp) center / cover;
+}
+
+.backdrop__image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(25px);
+    opacity: 0;
+    transition: opacity 0.8s;
+}
+
+.backdrop__image.is-ready {
+    opacity: 0.5;
+}
+
+/* Dark layer on top so the text stays readable */
+.backdrop::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(1, 10, 19, 0.7);
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+    display: flex;
     align-items: center;
+    gap: 16px;
+    padding: 12px 24px;
+    background: rgba(1, 10, 19, 0.9);
+    border-bottom: 1px solid var(--gold-dark);
 }
 
-/* Search Box */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font: 700 1.2rem var(--title-font);
+    color: var(--gold);
+    white-space: nowrap;
+}
 
-.input__search {
-    padding: 3%;
+.brand__mark {
+    width: 18px;
+    height: 18px;
+    background: var(--blue);
+    border: 2px solid var(--gold);
+    transform: rotate(45deg);
+}
+
+.search {
+    position: relative;
+    flex: 1;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.search__icon {
+    position: absolute;
+    left: 12px;
+    top: 13px;
+    color: var(--gold-dark);
+}
+
+.search__input {
+    width: 100%;
+    padding: 9px 12px 9px 36px;
+    background: var(--bg);
+    border: 1px solid var(--gold-dark);
+    color: var(--text);
+    font: inherit;
+}
+
+.search__input:focus {
     outline: none;
-    border: 2px solid #0f0f0f;
-    border-radius: 5px;
-    font-weight: 600;
-    color: #ffffff;
-    font-size: clamp(12px, 2.2vw, 1rem);
-    text-align: center;
-    background-color: #2e2e2e;
+    border-color: var(--gold);
 }
 
-/* Champion Image Box */
+/* Hide the browser's own clear (x) button */
+.search__input::-webkit-search-cancel-button {
+    display: none;
+}
 
-.skins {
-    margin-top: 1rem;
-    min-width: 75vw; 
+.search__hint {
+    position: absolute;
+    right: 10px;
+    top: 9px;
+    padding: 0 6px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
+.search__results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    max-height: 350px;
+    overflow-y: auto;
+    list-style: none;
+    background: var(--bg);
+    border: 1px solid var(--gold-dark);
+}
+
+.search__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.search__option img {
+    width: 32px;
+    height: 32px;
+}
+
+.search__option strong {
+    display: block;
+    font-family: var(--title-font);
+}
+
+.search__option span {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.search__option[aria-selected="true"],
+.search__option:hover {
+    background: #1e2328;
+}
+
+.search__none {
+    padding: 10px;
+    color: var(--muted);
+}
+
+.topbar__actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--gold-dark);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    border-color: var(--gold);
+}
+
+.btn--ghost {
+    color: var(--gold);
+}
+
+.btn--primary {
+    background: var(--blue-dark);
+    border-color: var(--blue);
+}
+
+.btn--primary:hover {
+    border-color: var(--text);
+}
+
+/* ---------- Main layout: splash on the left, details on the right ---------- */
+
+.stage {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    align-items: start;
+    align-content: start;
+    gap: 32px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.showcase,
+.details {
+    min-width: 0;
+}
+
+/* ---------- Splash and skins ---------- */
+
+.frame {
+    position: relative;
+    aspect-ratio: 1215 / 717;
+    border: 2px solid var(--gold-dark);
+    overflow: hidden;
+}
+
+.splash {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s;
+}
+
+.frame.is-loading .splash {
+    opacity: 0.4;
+}
+
+.frame__loader {
+    position: absolute;
+    inset: 0;
+    display: none;
+    place-items: center;
+}
+
+.frame.is-loading .frame__loader {
+    display: grid;
+}
+
+.frame__loader span {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--line);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.frame__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    font-size: 1.4rem;
+    background: rgba(1, 10, 19, 0.7);
+    border: 1px solid var(--gold-dark);
+    border-radius: 50%;
+}
+
+.frame__nav:hover {
+    border-color: var(--gold);
+}
+
+.frame__nav--prev { left: 12px; }
+.frame__nav--next { right: 12px; }
+
+.frame__nav[disabled] {
+    display: none;
+}
+
+.frame__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 16px;
+    background: rgba(1, 10, 19, 0.75);
+}
+
+.skin-name {
+    font: 700 1.1rem var(--title-font);
+}
+
+.skin-count {
+    color: var(--gold);
+    font-size: 0.85rem;
+}
+
+.skins {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-bottom: 8px;
+    overflow-x: auto;
+}
+
+.skins__item {
+    flex: none;
+    width: 64px;
+    aspect-ratio: 308 / 560;
+    border: 2px solid var(--line);
+    opacity: 0.6;
+}
+
+.skins__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.skins__item:hover,
+.skins__item[aria-selected="true"] {
+    opacity: 1;
+}
+
+.skins__item[aria-selected="true"] {
+    border-color: var(--gold);
+}
+
+/* ---------- Champion details ---------- */
+
+.identity {
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--gold-dark);
+}
+
+.identity__title {
+    font-family: var(--title-font);
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.identity__name {
+    font: 900 3rem/1.1 var(--title-font);
+    text-transform: uppercase;
+}
+
+.identity__roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    list-style: none;
+}
+
+.role-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px 3px 4px;
+    border: 1px solid var(--gold-dark);
+    color: var(--gold);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.role-chip img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Small rise animation each time a new champion loads */
+.details.is-entering {
+    animation: rise 0.5s;
+}
+
+@keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+}
+
+/* Tabs */
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--line);
+}
+
+.tab {
+    padding: 8px 16px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid transparent;
+}
+
+.tab:hover,
+.tab[aria-selected="true"] {
+    color: var(--text);
+}
+
+.tab[aria-selected="true"] {
+    border-bottom-color: var(--gold);
+}
+
+.panel {
+    margin-top: 16px;
+    padding: 20px;
+    background: var(--panel);
+    border: 1px solid var(--gold-dark);
+    animation: fade 0.3s;
+}
+
+@keyframes fade {
+    from { opacity: 0; }
+}
+
+.panel__heading {
+    margin-bottom: 10px;
+    color: var(--gold);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.panel__heading small {
+    color: var(--muted);
+    text-transform: none;
+}
+
+.panel__heading:not(:first-child) {
+    margin-top: 24px;
+}
+
+/* Lore */
+
+.tips details {
+    margin-top: 10px;
+    border: 1px solid var(--line);
+}
+
+.tips summary {
+    padding: 8px 12px;
+    color: var(--gold);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tips ul {
+    padding: 0 12px 12px 32px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* Abilities */
+
+.abilities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.ability-btn {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    border: 2px solid var(--line);
+    opacity: 0.6;
+}
+
+.ability-btn:hover,
+.ability-btn[aria-selected="true"] {
+    opacity: 1;
+}
+
+.ability-btn[aria-selected="true"] {
+    border-color: var(--gold);
+}
+
+.ability-btn__key {
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    padding: 0 4px;
+    background: var(--bg);
+    border: 1px solid var(--gold-dark);
+    font-size: 0.7rem;
+    line-height: 16px;
+}
+
+.ability__head {
+    display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.champion__image {
-    width: 40%;
-    min-width: 250px;
-    min-height: 150px;
-    max-height: 35vh;
-    max-width: 30vw;
-    border: 3px solid #0f0f0f;
-    border-radius: 50%;  
-    box-shadow: 5px 5px 3px #202020, 5px 6px 0 #bbbbbb;
+.ability__key {
+    padding: 0 6px;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    font-size: 0.75rem;
 }
 
-.skin {
-    padding: 0.25rem 0.25rem;
-    border: 2px solid #0f0f0f;    
-    font-size: clamp(20px, 1.8vw, 2rem);
-    font-weight: 800;
-    background-color: #798794;
-    box-shadow: 3px 3px 2px #202020, 4px 4px 0 #bbbbbb;
-    width: 8%;
-    min-width: 40px;
-    min-height: 30px;
-    display: flex;
-    justify-content: center;
+.ability__name {
+    font: 700 1.2rem var(--title-font);
 }
 
-.skin:active {
-    font-size: clamp(18px, 1.5vw, 1.9rem);
-    box-shadow: inset 2px 2px 0 #222;
-}
-
-.btn-prev {
-    border-radius: 100% 10% 10% 100%;
-}
-
-.btn-next {
-    border-radius: 10% 50% 50% 10%;
-}
-
-/* Champion Data Box */
-
-.champion__data {
-    margin-top: -2.4rem;
-    font-weight: 500;
-    color: #aaaaaa;
-    display: inline-flex;
-    flex-direction: column;
-}
-
-.champion__name {
-    font-weight: 800;    
-    font-size: clamp(22px, 2vw, 2.1rem);
-    color: #798794;
-    text-shadow: 3px 3px 2px #000, 4px 4px 1px #798794;
-}
-
-.champion__title {
-    font-weight: 500;
-    font-size: clamp(18px, 1.5vw, 1.8rem);
-    padding-top: 0.75rem;
-    text-shadow: 3px 3px 2px #000, 4px 4px 1px #798794;
-}
-
-/* Champion Info Box */
-
-.content_container {
-    width: 100%;       
-    height: 60%;
-    margin-bottom: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.content.btn-info-prev,
-.content.btn-info-next {
-    width: 10%;
-    display: flex;
-    justify-content: center;
-    border-radius: 10px;
-    padding: 0.25rem 1rem;
-    border: 2px solid #000;    
-    font-size: clamp(12px, 2.2vw, 1rem);
-    font-weight: 800;
-    background-color: #798794;
-    box-shadow: 3px 3px 2px #2e2e2e, 4px 4px 0 #ffffff;
-}
-
-.content__info {    
-    width: 70%;
-    height: 92%; 
-    display: flex;    
-    background-color: #ffffff;
-    border: 1px solid black;
-    opacity: 0.6;
-    border-radius: 5px;
-    margin: auto 0;
-    justify-content: center;
-    align-items: center;
-}
-
-#info__stats,
-#info__spells{
-    display: none;
-}
-
-/* Champion Info Box - Lore */
-
-.content__info__lore {
-    width: 100%;
-    margin: auto 3%;
-    text-align: center;
-    font-weight: 600;
-    color: #000000;
-    font-size: clamp(12px, 1.3vw, 1rem);
-}
-
-/* Champion Info Box - Stats */
-
-.content__info__stats {
-    height: 80%;
-    width: 90%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-.classes {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 25%;
-}
-
-.classes__title{
-    font-weight: 800;
-    font-size: clamp(16px, 1.2vw, 1.5rem);
-    color: #2e2e2e;
-}
-
-.classes__icons,
-.spell__icons {
-    width: 50px;
-    padding: 5px;
-}
-
-.stats {
-    display: flex;
-    justify-content: center;
-}
-
-/* Champion Info Box - Spells */
-
-.content__info__spells {
-    display: flex;
-    gap: 1vh;
-    flex-direction: column;
-}
-
-.passive {
-    padding: 5px;
-}
-
-.passive__title {
-    font-weight: 800;
-    font-size: clamp(12px, 1vw, 1.2rem);
-    color: #2e2e2e;
-}
-.champion__passive {    
-    height: 65%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.passive__icon {
-    width: 50px;
-}
-
-.passive__name {
-    font-weight: 800;
-    font-size: clamp(10px, 1vw, 1.5rem);
-    color: #2e2e2e;
-}
-
-.spell__name, 
-.passive__name {
-    display: none
-}
-
-.spells__title {
-    padding-bottom: 0.5rem;
-    font-weight: 800;
-    font-size: clamp(12px, 1vw, 1.2rem);
-    color: #2e2e2e;
-}
-
-.champion__spells {
+.ability__meta {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 9px;
+    gap: 16px;
+    margin-top: 6px;
+    font-size: 0.85rem;
 }
 
-.spell {
+.ability__meta div {
+    display: flex;
+    gap: 4px;
+}
+
+.ability__meta dt {
+    color: var(--muted);
+}
+
+.ability__desc {
+    margin-top: 10px;
+    white-space: pre-line;
+}
+
+/* Stats */
+
+.rating {
+    display: grid;
+    grid-template-columns: 90px 1fr 24px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+}
+
+.rating__label {
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.rating__bar {
+    height: 8px;
+    background: #1e2328;
+}
+
+.rating__fill {
+    display: block;
+    height: 100%;
+}
+
+.rating__value {
+    text-align: right;
+    font-weight: 700;
+}
+
+.base-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+}
+
+.base-stats div {
+    padding: 8px 10px;
+    border: 1px solid var(--line);
+}
+
+.base-stats dt {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.base-stats dd {
+    font-weight: 700;
+}
+
+.base-stats dd small {
+    color: var(--blue);
+}
+
+/* ---------- Previous / next champion ---------- */
+
+.cycler {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 16px;
+}
+
+.cycler__btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border: 1px solid var(--gold-dark);
+    background: var(--panel);
+}
+
+.cycler__btn:hover {
+    border-color: var(--gold);
+}
+
+.cycler__btn svg {
+    color: var(--gold);
+}
+
+.cycler__icon {
+    width: 32px;
+    height: 32px;
+}
+
+.cycler__label {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    border: 1px solid rgb(46, 46, 46);
-    border-radius: 5px;
-    width: 20%;
-    min-width: 65px;
-    margin: 0 15px 0 15px;
-    padding: 2px;
+    text-align: left;
 }
 
-.spell__name {
-    font-weight: 800;
-    font-size: clamp(10px, 1vw, 1.5rem);
-    color: #2e2e2e;
-    overflow-wrap: break-word;
-    width: 90%;
+.cycler__btn--next .cycler__label {
+    text-align: right;
 }
 
-.functions {
-    position: absolute;
-    bottom: 1rem;
-    width: 85%;
-    height: 2.5rem;
+.cycler__label small {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.cycler__name {
+    font-family: var(--title-font);
+    font-weight: 700;
+}
+
+.cycler__counter {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+/* ---------- Champion browser (dialog) ---------- */
+
+.browser {
+    width: min(1000px, 95vw);
+    max-height: 90vh;
+    margin: auto;
+    background: var(--bg);
+    color: var(--text);
+    border: 2px solid var(--gold-dark);
+}
+
+.browser::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.browser__inner {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.browser__head {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
+    align-items: center;
+    padding: 14px 18px;
 }
 
-.function {
-    padding: 0.5rem 0.1rem;
-    border: 2px solid #000;
-    font-size: clamp(12px, 2.2vw, 1rem);
-    font-weight: 800;
-    background-color: #798794;
-    box-shadow: 3px 3px 2px #2e2e2e, 4px 4px 0 #ffffff;
+.browser__title {
+    font: 700 1.2rem var(--title-font);
+    color: var(--gold);
 }
 
-.function.btn-prev,
-.function.btn-next {
-    width: 20%;
-    min-width: 50px;
-    max-width: 90px;
+.browser__close {
+    font-size: 1.3rem;
+    color: var(--gold);
+}
+
+.browser__filters {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 18px 14px;
+    border-bottom: 1px solid var(--line);
 }
 
-.function.btn-random {
-    border-radius: 10px;
-    width: 25%;
-    min-width: 60px;
-    max-width: 200px;
+.browser__search {
+    flex: 1;
+    min-width: 180px;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px solid var(--gold-dark);
+    color: var(--text);
+    font: inherit;
 }
 
-.function:active,
-.btn-info-next:active,
-.btn-info-prev:active {
-    font-size: clamp(12px, 2vw, 0.95rem);
-    box-shadow: inset 2px 2px 0 #222;
+.roles {
+    display: flex;
+    gap: 6px;
 }
 
-@media only screen and (min-height: 580px) {
-    .content__info__spells {
-        display: flex;
-        gap: 4vh;
-        flex-direction: column;
+.role-filter {
+    padding: 6px;
+    border: 1px solid var(--line);
+    opacity: 0.6;
+}
+
+.role-filter img {
+    width: 22px;
+    height: 22px;
+}
+
+.role-filter[aria-pressed="true"] {
+    border-color: var(--gold);
+    opacity: 1;
+}
+
+.browser__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 12px;
+    padding: 16px 18px;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.browser__card {
+    width: 100%;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.browser__card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 4px;
+    border: 2px solid var(--line);
+}
+
+.browser__card:hover,
+.browser__card[aria-current="true"] {
+    color: var(--text);
+}
+
+.browser__card:hover img {
+    border-color: var(--gold);
+}
+
+.browser__card[aria-current="true"] img {
+    border-color: var(--blue);
+}
+
+.browser__empty {
+    padding: 30px;
+    text-align: center;
+    color: var(--muted);
+}
+
+/* ---------- Toast and footer ---------- */
+
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    padding: 10px 18px;
+    background: var(--bg);
+    border: 1px solid var(--attack);
+}
+
+.legal {
+    padding: 12px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+}
+
+/* ---------- Smaller screens ---------- */
+
+@media (max-width: 900px) {
+    /* Icon-only buttons */
+    .btn span,
+    .search__hint {
+        display: none;
+    }
+
+    .identity__name {
+        font-size: 2.2rem;
     }
 }
 
-@media only screen and (min-width: 545px) {
-    .champion__spells {
-        display: flex;
-        gap: 10px;
-        justify-content: space-evenly;
+/* Phones in portrait: everything in one column */
+@media (max-width: 640px) {
+    .topbar {
+        flex-wrap: wrap;
+        padding: 10px 16px;
     }
 
-    .spells__title{
-        margin-bottom: 0.5rem;
-    }  
-    
-    .spell{
-        margin: 0;
+    .search {
+        order: 1;
+        flex-basis: 100%;
     }
 
-    .spell__name, 
-    .passive__name {
-        display: block
-    }
-}
-
-
-@media only screen and (min-width: 800px) {
-    .content_container {
-        width: 85%;       
+    .topbar__actions {
+        margin-left: auto;
     }
 
-    .btn-info-prev, .btn-info-next {
-        padding: 0.25rem 0.5rem;
+    .stage {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 16px;
     }
 
-    .content__info__stats {
-        height: 92%;
-        width: 90%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
+    .identity {
+        text-align: center;
     }
 
-    .content__info__spells {
-        display: flex;
-        flex-direction: row;
-        gap: 1vw;
+    .identity__roles,
+    .tabs {
+        justify-content: center;
     }
 
-    .champion__passive {
-        padding: 2px;
+    .cycler {
+        padding: 0 16px 16px;
     }
 
-    .passive__title{
-        margin-bottom: 0.5rem;
-        padding-bottom: 0.5rem;
-        font-weight: 800;
-        font-size: clamp(12px, 1vw, 1.2rem);
-        color: #2e2e2e;
-    } 
-
-    .classes {
-        flex-direction: column;
+    .cycler__counter,
+    .cycler__label small {
+        display: none;
     }
 
-    .classes__title{
-        margin-bottom: 1rem;
+    .roles {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    .functions {
-        width: 75%;
-    }
-
-    .function {
-        padding: 0.5rem 1rem;
+    .browser__grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }

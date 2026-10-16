@@ -3,79 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse League of Legends champions: splash arts, skins, abilities, stats and lore.">
+    <meta name="theme-color" content="#010a13">
 
     <!-- Links -->
     <link rel="icon" href="./favicons/favicon-16x16.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://ddragon.leagueoflegends.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="./css/style.css">
 
     <!-- Main JS -->
-    <script
-        defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-    </script>
     <script defer src="./js/script.js"></script>
 
     <title>LoL Champs</title>
 </head>
 <body>
-    <main> 
-        <form class="form">
-            <input 
-                type="search" 
-                class="input__search"
-                placeholder="Search by Name"
-                required
-                />
-        </form>       
+    <!-- Ambient background: current splash art, blurred -->
+    <div class="backdrop" aria-hidden="true">
+        <div class="backdrop__image"></div>
+    </div>
 
-        <div class="skins">
-            <button class="skin btn-prev">&lt;</button>
-            <img src="./images/champion-random.jpg" alt="champion" class="champion__image"> 
-            <button class="skin btn-next">&gt;</button>
-        </div>        
-        
-        <h1 class="champion__data">
-            <span class="champion__name">&ensp;</span>
-            <span class="champion__title">&ensp;</span>
-        </h1>  
-        
-        <div class="content_container">
-            <button class="content btn-info-prev">+ info</button>
-            <div id="info__lore" class="content__info">
-                <p class="content__info__lore">Search champion to get more information</p>    
-            </div>
-            <div id="info__stats" class="content__info">        
-                <div class="content__info__stats" >
-                    <div class="classes">
-                        <p class="classes__title" hidden>Class: </p>
-                        <div class="champion__classes"></div>
-                    </div>
-                    <div class="stats">
-                        <canvas id="championStats" style="width:100%;max-width:350px"></canvas>                        
-                    </div>                    
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand__mark" aria-hidden="true"></span>
+            <span class="brand__text">LoL <strong>Champs</strong></span>
+        </div>
+
+        <form class="search" role="search" autocomplete="off">
+            <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.05l4.25 4.24-1.42 1.42-4.24-4.25A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"/></svg>
+            <input
+                type="search"
+                class="search__input"
+                placeholder="Search a champion…"
+                aria-label="Search a champion"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded="false"
+                aria-controls="search-results"
+                spellcheck="false"
+            />
+            <kbd class="search__hint" aria-hidden="true">/</kbd>
+            <ul id="search-results" class="search__results" role="listbox" hidden></ul>
+        </form>
+
+        <div class="topbar__actions">
+            <button type="button" class="btn btn--ghost btn-browse" aria-haspopup="dialog">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/></svg>
+                <span>Browse</span>
+            </button>
+            <button type="button" class="btn btn--primary btn-random" title="Random champion">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l4 4-4 4V8h-2.6l-7 9H4v-2h2.4l7-9H17V3ZM4 7h3.4l2.2 2.8-1.3 1.6L6.4 9H4V7Zm13 6 4 4-4 4v-3h-3.4l-2.2-2.8 1.3-1.6 1.9 2.4H17v-3Z"/></svg>
+                <span>Random</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="stage" aria-busy="true">
+        <!-- Splash & skins -->
+        <section class="showcase" aria-label="Skins">
+            <div class="frame">
+                <img src="./images/champion-random.jpg" alt="" class="splash" decoding="async">
+                <div class="frame__loader" aria-hidden="true"><span></span></div>
+
+                <button type="button" class="frame__nav frame__nav--prev skin-prev" aria-label="Previous skin" title="Previous skin (←)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg>
+                </button>
+                <button type="button" class="frame__nav frame__nav--next skin-next" aria-label="Next skin" title="Next skin (→)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 18.6 10 20l8-8-8-8-1.4 1.4 6.6 6.6z"/></svg>
+                </button>
+
+                <div class="frame__caption">
+                    <span class="skin-name" aria-live="polite">&nbsp;</span>
+                    <span class="skin-count"></span>
                 </div>
             </div>
-            <div id="info__spells" class="content__info">
-                <div class="content__info__spells">
-                    <div class="passive"> 
-                        <p class="passive__title" hidden>Passive</p>  
-                        <div class="champion__passive">                                         
+
+            <div class="skins" role="listbox" aria-label="Choose a skin"></div>
+        </section>
+
+        <!-- Champion details -->
+        <section class="details" aria-labelledby="champion-name">
+            <header class="identity">
+                <p class="identity__title champion-title">&nbsp;</p>
+                <h1 id="champion-name" class="identity__name champion-name">Summoning…</h1>
+                <ul class="identity__roles champion-roles" aria-label="Classes"></ul>
+            </header>
+
+            <nav class="tabs" role="tablist" aria-label="Champion information">
+                <button type="button" class="tab" role="tab" id="tab-lore" aria-controls="panel-lore" aria-selected="true">Lore</button>
+                <button type="button" class="tab" role="tab" id="tab-abilities" aria-controls="panel-abilities" aria-selected="false" tabindex="-1">Abilities</button>
+                <button type="button" class="tab" role="tab" id="tab-stats" aria-controls="panel-stats" aria-selected="false" tabindex="-1">Stats</button>
+            </nav>
+
+            <div class="panels">
+                <article id="panel-lore" class="panel" role="tabpanel" aria-labelledby="tab-lore" tabindex="0">
+                    <p class="lore">Search for a champion to discover their story.</p>
+                    <div class="tips"></div>
+                </article>
+
+                <article id="panel-abilities" class="panel" role="tabpanel" aria-labelledby="tab-abilities" tabindex="0" hidden>
+                    <div class="abilities" role="tablist" aria-label="Abilities"></div>
+                    <div class="ability" aria-live="polite">
+                        <div class="ability__head">
+                            <span class="ability__key"></span>
+                            <h2 class="ability__name"></h2>
                         </div>
+                        <dl class="ability__meta"></dl>
+                        <p class="ability__desc"></p>
                     </div>
-                    <div class="spells">
-                        <p class="spells__title" hidden>Spells</p>
-                        <div class="champion__spells">                                         
-                        </div>  
-                    </div>                                      
-                </div>
+                </article>
+
+                <article id="panel-stats" class="panel" role="tabpanel" aria-labelledby="tab-stats" tabindex="0" hidden>
+                    <h2 class="panel__heading">Ratings</h2>
+                    <div class="ratings"></div>
+                    <h2 class="panel__heading">Base stats <small>(+ per level)</small></h2>
+                    <dl class="base-stats"></dl>
+                </article>
             </div>
-            <button class="content btn-info-next">+ info</button>
+        </section>
+    </main>
+
+    <nav class="cycler" aria-label="Champion navigation">
+        <button type="button" class="cycler__btn champ-prev" title="Previous champion (Shift + ←)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12z"/></svg>
+            <img class="cycler__icon" alt="" width="36" height="36">
+            <span class="cycler__label"><small>Previous</small><span class="cycler__name"></span></span>
+        </button>
+        <span class="cycler__counter" aria-live="polite"></span>
+        <button type="button" class="cycler__btn cycler__btn--next champ-next" title="Next champion (Shift + →)">
+            <span class="cycler__label"><small>Next</small><span class="cycler__name"></span></span>
+            <img class="cycler__icon" alt="" width="36" height="36">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 18.6 10 20l8-8-8-8-1.4 1.4 6.6 6.6z"/></svg>
+        </button>
+    </nav>
+
+    <!-- Champion browser -->
+    <dialog class="browser" aria-labelledby="browser-title">
+        <div class="browser__inner">
+            <header class="browser__head">
+                <h2 id="browser-title" class="browser__title">Choose your champion</h2>
+                <button type="button" class="browser__close" aria-label="Close">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.7 16.9 4.3 12 9.2 7.1 4.3 5.7 5.7 10.6 12l-4.9 4.9 1.4 1.4 4.9-4.9 4.9 4.9 1.4-1.4-4.9-4.9z"/></svg>
+                </button>
+            </header>
+            <div class="browser__filters">
+                <input type="search" class="browser__search" placeholder="Filter by name…" aria-label="Filter champions by name" spellcheck="false">
+                <div class="roles" role="group" aria-label="Filter by class"></div>
+            </div>
+            <ul class="browser__grid"></ul>
+            <p class="browser__empty" hidden>No champion answers that call.</p>
         </div>
-        
-        <div class="functions">
-            <button class="function btn-prev">&lt;&ensp;Prev</button>
-            <button class="function btn-random">Random</button>
-            <button class="function btn-next">Next&ensp;&gt;</button>
-        </div>
-    </main>    
+    </dialog>
+
+    <div class="toast" role="status" aria-live="polite" hidden></div>
+
+    <footer class="legal">
+        Data &amp; art from <a href="https://developer.riotgames.com/docs/lol" target="_blank" rel="noopener">Riot Data Dragon</a>
+        <span class="patch"></span>. LoL Champs isn't endorsed by Riot Games.
+    </footer>
 </body>
 </html>
